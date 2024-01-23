@@ -126,6 +126,7 @@ def display_body(msg):
         st.write(msg.get_payload(decode=True).decode())
 
 def main():
+    st.set_page_config(page_title="Odin's Eye", page_icon="assets/logo.png", layout="wide", initial_sidebar_state="auto")
     st.title("Odin's Eye")
 
     uploaded_file = st.file_uploader("Choose an EML file", type=["eml"])
