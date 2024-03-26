@@ -3,3 +3,4 @@ eml
 attachments/*
 .streamlit
 EmailParsers/__pycache__
+EmailParsers/utils/__pycache__
