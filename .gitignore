@@ -2,3 +2,4 @@ main.py
 eml
 attachments/*
 .streamlit
+EmailParsers/__pycache__
