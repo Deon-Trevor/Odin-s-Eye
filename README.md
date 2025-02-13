@@ -1,34 +1,78 @@
-# Odin's Eye: Unveil the Secrets in Your Emails
-**Odin's Eye** is a powerful email analysis tool designed for cyber security professionals and enthusiasts. Inspired by the legendary sight of Norse god Odin, this tool provides deep insights into email content, attachments, and headers. It's available in two versions: a Command Line Interface (CLI) for those who prefer the control and flexibility of command-line tools, and a Graphical User Interface (GUI) powered by Streamlit for a more visual and interactive experience.
+# 🦉 Odin’s Eye: Unveil the Secrets in Your Emails  
 
-# Features
-- **Email Header Analysis**: Quickly parse and display essential email header information, including sender, recipient, subject, and date.
-- **Base64 Decoding**: Detect and decode Base64 encoded strings seamlessly, revealing concealed data.
-- **URL Extraction**: Extract and list all URLs found within an email, allowing for further analysis of potential threats or phishing attempts.
-- **Attachment Analysis**: Scans attachments with VirusTotal API for security threats.
-- **Email Body Display**: Render the email's body content, both text and HTML, for a complete view of the email's composition.
-- **External Verdicts**: Get a verdict from popular platforms such as Virus Total, URLScan, PhishFort \(Nighthawk), etc  
-- **Intuitive GUI**: Streamlit-based interface for more interactive analysis. All hail streamlit 🙌🏾
+Odin’s Eye is a **cutting-edge email analysis tool** designed for **cybersecurity professionals and researchers**. Inspired by the legendary sight of Norse god Odin, this tool provides **deep insights** into email headers, attachments, and embedded URLs, helping to detect phishing, malware, and suspicious content.  
 
-**RUN Locally**
-```
-pip3 install -r requirements.txt
+The latest version of Odin’s Eye features a **FastAPI backend** with a **modern custom-built HTML, CSS, and JavaScript frontend**, replacing the previous Streamlit-based GUI. This ensures **better performance, flexibility, and interactivity** for analyzing email threats.  
+
+---
+
+## ⚡ Features  
+
+### **📩 Email Header Analysis**  
+- Extracts critical metadata (**From, To, CC, Subject, Date, etc.**)  
+- Displays **detailed authentication results** (SPF, DKIM, DMARC)  
+- Highlights anomalies and potential **spoofing attempts**  
+
+### **🛠️ Advanced Traceroute Visualization**  
+- Tracks the journey of an email across **mail servers**  
+- **Animated step-by-step visualization** of mail hops  
+- Displays **IP addresses, timestamps, and raw headers**  
+
+### **🔍 Base64 & Encoding Analysis**  
+- **Decodes Base64-encoded strings** hidden in email bodies and headers  
+- Detects **obfuscated payloads** or hidden malicious content  
+
+### **🌐 URL & Domain Extraction**  
+- Extracts and lists **all URLs** found in emails  
+- Runs checks on URLs using **VirusTotal, URLScan, and PhishFort (Nighthawk)**  
+> **📌 NB:** While the **VirusTotal, URLScan and Nighthawk (NH)** integrations are available in the **API**, their **UI integration is coming soon**. You can still manually use the API to check URLs and attachments.
+
+### **📎 Attachment Analysis**  
+- Detects file attachments and **checks SHA-256 hashes** against **VirusTotal**  
+- Offers the ability to **upload suspicious files** for scanning  
+
+### **📧 Email Body Rendering**  
+- Displays **HTML, plaintext, and raw source views** of the email body  
+- Analyzes **embedded content** for hidden threats  
+
+### **🔬 IOC (Indicators of Compromise) Extraction**  
+- Extracts **IP addresses, emails, phone numbers, hashes, and social media links**  
+- Flags **potential threats** using **automated threat intelligence**  
+
+### **🛡️ Security & Authentication Checks**  
+- **SPF/DKIM/DMARC validation** for sender reputation  
+- **Fetches live DNS records** for SPF, DMARC, and DKIM signatures  
+- Identifies **email spoofing** or unauthorized senders  
+
+---
+
+## 🚀 Getting Started  
+
+### **1️⃣ Installation**  
+Clone the repository:  
+```bash
+git clone https://github.com/your-username/odins-eye.git
+cd odins-eye
 ```
 
-**CLI Usage**
+Install dependencies:
+```bash
+pip install -r requirements.txt
 ```
-export VIRUS_TOTAL_KEY='your_api_key_here'
-python odins_eye_cli.py
-```
-Follow the prompts to input the path to the .eml or .msg file.
 
-**GUI Usage**
-
-Set up your VirusTotal API key as an environment variable or within the Streamlit app.
-Launch the Streamlit app:
+### **2️⃣ Backend Setup (FastAPI)**
+Run the FastAPI backend:
+```bash
+python3 -m uvicorn backend.main:app --host localhost --port 8080
 ```
-streamlit run odins_eye_gui.py
-```
-Use the interactive interface to upload and analyze emails.
+The API docs will be available at:
+📌 http://127.0.0.1:8000/docs (Swagger API Docs)
 
-**NB**: As i am not a UI/UX person, I rely heavily on streamlit. Unfortunately, due to streamlit's limitations, some features will either take a long while or may never make it onto the GUI version
+### **3️⃣ Frontend Setup**
+Simply open the index.html file in a web browser, or serve it using a simple HTTP server:
+```bash
+python -m http.server 80
+```
+Then, navigate to http://localhost/ in your browser.
+
+###**🔥 Odin’s Eye - See through the lies of phishing and deception! 🔥**
