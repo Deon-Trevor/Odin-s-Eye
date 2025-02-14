@@ -1,3 +1,5 @@
 odin/
 .env
 main.py
+backend.py
+backend/__pycache__/
