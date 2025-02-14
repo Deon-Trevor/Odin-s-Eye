@@ -63,7 +63,7 @@ pip install -r requirements.txt
 ### **2️⃣ Backend Setup (FastAPI)**
 Run the FastAPI backend:
 ```bash
-python3 -m uvicorn backend.main:app --host localhost --port 8080
+python3 -m uvicorn backend.main:app --host localhost --port 7070
 ```
 The API docs will be available at:
 📌 http://127.0.0.1:8000/docs (Swagger API Docs)
