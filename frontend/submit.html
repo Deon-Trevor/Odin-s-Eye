@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odin's Eye</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-[400px] text-center">
+
+        <!-- ✅ Logo at the Top -->
+        <div class="mb-4">
+            <img src="/assets/logo.png" alt="Company Logo" class="h-16 mx-auto">
+        </div>
+
+        <h1 class="text-xl font-semibold">Upload an Email</h1>
+        <p class="text-gray-500 mb-4">Drag & drop an email file (.eml, .msg, .txt) or click to select one.</p>
+
+        <!-- Drag & Drop Area -->
+        <div id="dropArea"
+            class="border-2 border-dashed border-blue-400 p-6 rounded-lg text-gray-500 cursor-pointer hover:bg-gray-50 transition">
+            <label for="fileInput" id="fileLabel" class="cursor-pointer">
+                Click or drag a file here
+            </label>
+            <input type="file" id="fileInput" accept=".eml,.msg,.txt" class="hidden">
+        </div>
+
+        <!-- Upload Button (Initially Disabled) -->
+        <button id="uploadButton" class="mt-4 bg-gray-400 text-white px-4 py-2 rounded-md w-full cursor-not-allowed"
+            disabled>
+            Upload File
+        </button>
+
+        <!-- Loading Animation -->
+        <div id="loading" class="hidden mt-4">
+            <p class="text-gray-600">Processing...</p>
+            <div class="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 mx-auto mt-2"></div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const fileLabel = document.getElementById("fileLabel");
+        const uploadButton = document.getElementById("uploadButton");
+        const dropArea = document.getElementById("dropArea");
+
+        // ✅ Update label text when a file is selected & enable button
+        fileInput.addEventListener("change", function () {
+            if (fileInput.files.length > 0) {
+                fileLabel.textContent = `📩 ${fileInput.files[0].name}`;
+                fileLabel.classList.add("text-blue-600", "font-semibold");
+                uploadButton.classList.remove("bg-gray-400", "cursor-not-allowed");
+                uploadButton.classList.add("bg-blue-600", "hover:bg-blue-700");
+                uploadButton.disabled = false;
+            }
+        });
+
+        // ✅ Drag & Drop Styling
+        dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropArea.classList.add("border-blue-600", "bg-blue-50");
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("border-blue-600", "bg-blue-50");
+        });
+
+        dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropArea.classList.remove("border-blue-600", "bg-blue-50");
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileLabel.textContent = `📩 ${files[0].name}`;
+                fileLabel.classList.add("text-blue-600", "font-semibold");
+                uploadButton.classList.remove("bg-gray-400", "cursor-not-allowed");
+                uploadButton.classList.add("bg-blue-600", "hover:bg-blue-700");
+                uploadButton.disabled = false;
+            }
+        });
+
+        // ✅ Upload Logic
+        uploadButton.addEventListener("click", async function () {
+            let file = fileInput.files[0];
+
+            if (!file) {
+                alert("⚠️ Please select a file");
+                return;
+            }
+
+            document.getElementById("loading").classList.remove("hidden");
+
+            let formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                console.log("📨 Uploading email for analysis...");
+
+                let response = await fetch("http://localhost:7070/email/analyze", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                let data = await response.json();
+                document.getElementById("loading").classList.add("hidden");
+
+                if (response.ok) {
+                    console.log("✅ Upload successful:", data);
+                    let subject = data?.analysis?.headers?.subject || "No Subject";
+                    localStorage.setItem("emailData", JSON.stringify(data));
+                    window.location.href = "analysis.html?subject=" + encodeURIComponent(subject);
+                } else {
+                    console.error("🚨 Upload failed:", data);
+                    alert("Upload failed: " + (data.detail || "Unknown error"));
+                }
+            } catch (error) {
+                document.getElementById("loading").classList.add("hidden");
+                console.error("🚨 Error uploading file:", error);
+                alert("Error uploading file: " + error.message);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
