@@ -106,22 +106,30 @@
                     body: formData,
                 });
 
-                let data = await response.json();
-                document.getElementById("loading").classList.add("hidden");
+                let text = await response.text(); // Read raw response before parsing
+                console.log("📜 Raw response:", text);
 
-                if (response.ok) {
-                    console.log("✅ Upload successful:", data);
-                    let subject = data?.analysis?.headers?.subject || "No Subject";
-                    localStorage.setItem("emailData", JSON.stringify(data));
-                    window.location.href = "analysis.html?subject=" + encodeURIComponent(subject);
-                } else {
-                    console.error("🚨 Upload failed:", data);
-                    alert("Upload failed: " + (data.detail || "Unknown error"));
+                try {
+                    let data = JSON.parse(text); // Manually parse JSON
+                    document.getElementById("loading").classList.add("hidden");
+
+                    if (response.ok) {
+                        console.log("✅ Upload successful:", data);
+                        let subject = data?.analysis?.headers?.subject || "No Subject";
+                        localStorage.setItem("emailData", JSON.stringify(data));
+                        window.location.href = "analysis.html?subject=" + encodeURIComponent(subject);
+                    } else {
+                        console.error("🚨 Upload failed:", data);
+                        alert("Upload failed: " + (data.detail || "Unknown error"));
+                    }
+                } catch (jsonError) {
+                    console.error("🚨 JSON Parsing Error:", jsonError, "Raw response:", text);
+                    alert("Error processing response: " + jsonError.message);
                 }
-            } catch (error) {
+            } catch (networkError) {
                 document.getElementById("loading").classList.add("hidden");
-                console.error("🚨 Error uploading file:", error);
-                alert("Error uploading file: " + error.message);
+                console.error("🚨 Error uploading file:", networkError);
+                alert("Error uploading file: " + networkError.message);
             }
         });
     </script>
