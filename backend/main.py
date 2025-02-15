@@ -21,7 +21,7 @@ app.include_router(email_router, prefix="/email", tags=["Email Analysis"])
 app.include_router(nighthawk_router, prefix="/nighthawk", tags=["Nighthawk URL Checks"])
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all domains (change later for security)
+    allow_origins=["https://odin.syncpundit.io"], 
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
