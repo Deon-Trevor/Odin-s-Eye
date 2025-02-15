@@ -101,7 +101,7 @@
             try {
                 console.log("📨 Uploading email for analysis...");
 
-                let response = await fetch("http://127.0.0.1:7070/email/analyze", {
+                let response = await fetch("/api/email/analyze", {
                     method: "POST",
                     body: formData,
                 });
