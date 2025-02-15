@@ -101,7 +101,7 @@
             try {
                 console.log("📨 Uploading email for analysis...");
 
-                let response = await fetch("/api/email/analyze", {
+                let response = await fetch("/email/analyze", {
                     method: "POST",
                     body: formData,
                 });
